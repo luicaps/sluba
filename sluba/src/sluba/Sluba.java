@@ -28,7 +28,17 @@ public class Sluba {
         
         //help
         if(args[1].compareTo("-h")==0) {
-            
+            System.out.println("Uso: sluba <opcao> <arquivo> <parametro>");
+            System.out.println("<opcao> e <parametro> NAO sao obrigatorios\n\n");
+            System.out.println("opcao:");
+            System.out.println("\t-h\tMostra estas informacoes");
+            System.out.println("\n");
+            System.out.println("arquivo:\tarquivo ou diretorio para arquivo a ser compilado");
+            System.out.println("\n");
+            System.out.println("parametro:\n");
+            System.out.println("\t-o arquivo\tCria o arquivo compilado em diretorio e nome especificos, incluindo extensao");
+            System.out.println("\n");
+            System.out.println("Spam, Louis and Drumstick corp.");
         }
         
         File file;
