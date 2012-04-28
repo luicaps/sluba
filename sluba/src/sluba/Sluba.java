@@ -52,5 +52,15 @@ public class Sluba {
         for (int i = 2; i < args.length; i++) {
             //analisa os parametros
         }
+        
+        //teste hahs
+//        Hash tabela = new Hash();
+//        tabela.addSimbolo("casa");
+//        tabela.addSimbolo("do");
+//        tabela.addSimbolo("piru");
+//        tabela.addSimbolo("coco");
+//        tabela.addSimbolo("gluglu");
+//        
+//        tabela.imprimirTabelaHash();
     }
 }
