@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package sluba;
+package Global;
 
 import java.util.ArrayList;
 
@@ -25,8 +25,8 @@ public class Hash {
         this.chaves[indice].add(simbolo);
     }
     
-    public int encontrarSimbolo(String simbolo){
-        return funcaoHash(simbolo);
+    public String encontrarSimbolo(String simbolo){
+         return encontrarPorIndice(funcaoHash(simbolo), simbolo);
     }
     
     protected int funcaoHash(String palavra){
@@ -36,6 +36,18 @@ public class Hash {
             soma += Math.pow(aux, i);
         }
         return (int) (soma%this.chaves.length);
+    }
+    
+    protected String encontrarPorIndice(int index, String simbolo){
+        if(this.chaves[index].size() == 1)
+            return (String) this.chaves[index].get(0);
+        else{
+            for(int i = 0; i < this.chaves[index].size(); i++){
+                if(this.chaves[index].get(i) == simbolo)
+                    return (String) this.chaves[index].get(i);
+            }
+            return null;
+        }
     }
     
     public void imprimirTabelaHash(){
