@@ -14,20 +14,20 @@ public class Bloco {
     private long id;
     private ArrayList<Bloco> listaDeFilhos;
     private Bloco pai;
-    private Hash tabelaSimbolo;
+    private TabelaHash tabelaSimbolo;
 
     public Bloco() {
         this.id = -1;
         this.listaDeFilhos = new ArrayList<>();
         this.pai = null;
-        this.tabelaSimbolo = new Hash();
+        this.tabelaSimbolo = new TabelaHash();
     }
 
     public Bloco(long id, Bloco pai) {
         this.id = id;
         this.listaDeFilhos = new ArrayList<>();
         this.pai = pai;
-        this.tabelaSimbolo = new Hash();
+        this.tabelaSimbolo = new TabelaHash();
     }
 
     public long getId() {
@@ -54,11 +54,11 @@ public class Bloco {
         this.pai = pai;
     }
 
-    public Hash getTabelaSimbolo() {
+    public TabelaHash getTabelaSimbolo() {
         return tabelaSimbolo;
     }
 
-    public void setTabelaSimbolo(Hash tabelaSimbolo) {
+    public void setTabelaSimbolo(TabelaHash tabelaSimbolo) {
         this.tabelaSimbolo = tabelaSimbolo;
     }
 }
