@@ -4,7 +4,7 @@
  */
 package sluba;
 
-import Global.PRes;
+import Global.PalavraReservada;
 import java.io.File;
 
 /**
