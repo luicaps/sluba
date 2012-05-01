@@ -19,7 +19,7 @@ public class Bloco {
     public Bloco() {
         this.id = -1;
         this.listaDeFilhos = new ArrayList<>();
-        this.pai = new Bloco();
+        this.pai = null;
         this.tabelaSimbolo = new Hash();
     }
 
