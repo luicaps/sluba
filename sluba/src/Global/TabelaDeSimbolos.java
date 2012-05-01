@@ -34,7 +34,7 @@ public class TabelaDeSimbolos {
     public void abrirBloco(long id){
         Bloco filho = new Bloco(id,this.raiz);
         this.raiz.getListaDeFilhos().add(filho);
-        this.raiz = this.raiz.getListaDeFilhos().get(this.raiz.getListaDeFilhos().size());
+        this.raiz = this.raiz.getListaDeFilhos().get(this.raiz.getListaDeFilhos().size()-1);
     }
     
     public void fecharBloco(){
@@ -48,9 +48,9 @@ public class TabelaDeSimbolos {
     }
     
     public String encontrarSimbolo(String simbolo) {
-        if(this.raiz.getTabelaSimbolo().encontrarSimbolo(simbolo) == null)
+        if(this.raiz.getTabelaSimbolo().encontrarSimbolo(simbolo) == false)
             return "simbolo não existe";
         else
-            return this.raiz.getTabelaSimbolo().encontrarSimbolo(simbolo);
+            return "simbolo encontrado";
     }
 }
