@@ -20,12 +20,19 @@ public class Hash {
         }
     }
     
+    public void definirNumChaves(int numChaves){
+        this.chaves = new ArrayList[numChaves];
+        for (int i = 0; i < this.chaves.length; i++) {
+            this.chaves[i] = new ArrayList<>();
+        }
+    }
+    
     public void addSimbolo(String simbolo){
         int indice = funcaoHash(simbolo);
         this.chaves[indice].add(simbolo);
     }
     
-    public String encontrarSimbolo(String simbolo){
+    public boolean encontrarSimbolo(String simbolo){
          return encontrarPorIndice(funcaoHash(simbolo), simbolo);
     }
     
@@ -38,16 +45,20 @@ public class Hash {
         return (int) (soma%this.chaves.length);
     }
     
-    protected String encontrarPorIndice(int index, String simbolo){
-        if(this.chaves[index].size() == 1)
-            return (String) this.chaves[index].get(0);
+    protected boolean encontrarPorIndice(int index, String simbolo){
+        if(this.chaves[index].size() == 1){
+            if(this.chaves[index].get(0).equals(simbolo))
+                return true;
+            else
+                return false;
+        }
         else{
             for(int i = 0; i < this.chaves[index].size(); i++){
                 if(this.chaves[index].get(i) == simbolo)
-                    return (String) this.chaves[index].get(i);
+                    return true;
             }
-            return null;
-        }
+            return false;
+        }   
     }
     
     public void imprimirTabelaHash(){
