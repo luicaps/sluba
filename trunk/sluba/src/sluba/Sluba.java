@@ -4,6 +4,7 @@
  */
 package sluba;
 
+import Global.Erro;
 import Global.PalavraReservada;
 import java.io.File;
 
@@ -20,10 +21,7 @@ public class Sluba {
 
         
         if (args.length == 1) {
-            System.out.println("sluba: erro fatal: nao ha arquivos de entrada");
-            System.out.println("Utilize o parametro -h para ajuda");
-            System.out.println("Compilacao interrompida");
-            System.exit(1);
+            Erro.throwError(1);
         }
         
         //help
