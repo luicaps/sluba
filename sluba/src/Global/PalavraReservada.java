@@ -8,6 +8,6 @@ package Global;
  *
  * @author luiz-mint
  */
-public class PRes {
+public class PalavraReservada {
     
 }
