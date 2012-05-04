@@ -43,14 +43,14 @@ public class TabelaDeSimbolos {
         }     
     }
 
-    public void InserirSimbolo (String simbolo, String classe) {
+    public void InserirSimbolo (String simbolo, String classe) { //Luiz id
         this.raiz.getTabelaSimbolo().addToken(simbolo,classe);
     }
     
-    public String encontrarSimbolo(String simbolo) {
+    public boolean encontrarSimbolo(String simbolo) {
         if(this.raiz.getTabelaSimbolo().encontrarToken(simbolo) == null)
-            return "simbolo não existe";
+            return false;
         else
-            return "simbolo encontrado";
+            return true;
     }
 }
