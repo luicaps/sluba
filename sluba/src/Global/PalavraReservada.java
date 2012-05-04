@@ -4,40 +4,22 @@
  */
 package Global;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author luiz-mint
  */
 public class PalavraReservada {
+
     Hash tabela;
-    
+
     public PalavraReservada() {
         //Adiciona todas as palavras reservadas na tabela
         tabela = new Hash();
         tabela.addSimbolo("int");
         tabela.addSimbolo("float");
         tabela.addSimbolo("char");
-        tabela.addSimbolo("[");
-        tabela.addSimbolo("]");
-        tabela.addSimbolo("(");
-        tabela.addSimbolo(")");
-        tabela.addSimbolo("{");
-        tabela.addSimbolo("}");
-        tabela.addSimbolo(";");
-        tabela.addSimbolo("//");
-        tabela.addSimbolo("+");
-        tabela.addSimbolo("-");
-        tabela.addSimbolo("*");
-        tabela.addSimbolo("/");
-        tabela.addSimbolo("%");
-        tabela.addSimbolo("!=");
-        tabela.addSimbolo("==");
-        tabela.addSimbolo(">");
-        tabela.addSimbolo("<");
-        tabela.addSimbolo(">=");
-        tabela.addSimbolo("<=");
-        tabela.addSimbolo("||");
-        tabela.addSimbolo("&&");
         tabela.addSimbolo("read");
         tabela.addSimbolo("write");
         tabela.addSimbolo("procedure");
@@ -57,5 +39,35 @@ public class PalavraReservada {
     public void setTabela(Hash tabela) {
         this.tabela = tabela;
     }
-    
+
+    public static boolean isValid(char letter) {
+        if (letter >= 33) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+
+
+/*        tabela.addSimbolo("[");
+        tabela.addSimbolo("]");
+        tabela.addSimbolo("(");
+        tabela.addSimbolo(")");
+        tabela.addSimbolo("{");
+        tabela.addSimbolo("}");
+        tabela.addSimbolo(";");
+        tabela.addSimbolo("//");
+        tabela.addSimbolo("+");
+        tabela.addSimbolo("-");
+        tabela.addSimbolo("*");
+        tabela.addSimbolo("/");
+        tabela.addSimbolo("%");
+        tabela.addSimbolo("!=");
+        tabela.addSimbolo("==");
+        tabela.addSimbolo(">");
+        tabela.addSimbolo("<");
+        tabela.addSimbolo(">=");
+        tabela.addSimbolo("<=");
+        tabela.addSimbolo("||");
+        tabela.addSimbolo("&&");*/
