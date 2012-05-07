@@ -29,7 +29,7 @@ public class PalavraReservada {
         tabela.addSimbolo("dec");
         tabela.addSimbolo("break");
         tabela.addSimbolo("Start");
-        tabela.addSimbolo("Finish.");
+        tabela.addSimbolo("Finish");
     }
 
     public Hash getTabela() {

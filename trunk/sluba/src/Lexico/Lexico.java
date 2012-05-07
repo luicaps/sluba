@@ -4,6 +4,7 @@
  */
 package Lexico;
 
+import Global.Erro;
 import Global.PalavraReservada;
 import Global.TabelaDeSimbolos;
 import java.io.IOException;
@@ -19,19 +20,25 @@ public class Lexico {
     PalavraReservada palavras;
     String classeId;
     boolean verbose;
+    Erro erro;
 
-    public Lexico(TabelaDeSimbolos tb, boolean v) {
+    public Lexico(TabelaDeSimbolos tb, boolean v, Erro erro) {
         simbolos = tb;
         palavras = new PalavraReservada();
         classeId = "id";
         verbose = v;
+        this.erro = erro;
     }
 
     public void readFile(RandomAccessFile raf) throws IOException {
         //Inicia a leitura de arquivo
-        char[] line = raf.readLine().toCharArray();
+        char[] line;//raf.readLine().toCharArray();
         String palavra = new String();
-        while (line != null) {
+        if (verbose) {
+            System.out.println("\tIniciando a leitura de linhas");
+        }
+        while ((raf.length() - raf.getFilePointer()) > 0) {
+            line = raf.readLine().toCharArray();
             for (int i = 0; i < line.length; i++) {
                 //Estado 72 - Encontra letra
                 if ((line[i] > 64 && line[i] < 91) || (line[i] > 96 && line[i] < 123)) {
@@ -59,6 +66,7 @@ public class Lexico {
                         || (line[i] == '<')
                         || (line[i] == '|')
                         || (line[i] == '&')
+                        || (line[i] == '"')
                         || (line[i] == '.')) {
 
                     if (!palavra.equals("")) {
@@ -66,6 +74,7 @@ public class Lexico {
                         if (!palavras.getTabela().encontrarSimbolo(palavra)) {
                             if (!simbolos.encontrarSimbolo(palavra)) {
                                 simbolos.InserirSimbolo(palavra, classeId);
+                                System.out.println("Simbolo adicionado: " + palavra);
                             }
                         }
                         palavra = "";
@@ -83,11 +92,21 @@ public class Lexico {
                         || !(line[i] >= 97 && line[i] <= 125) // Simbolos: de a a z, {, |, }
                         || !(line[i] >= 9 && line[i] <= 10) // Simbolos: enter, tab
                         ) {
-                    //Erro...
+                    erro.throwError(3, String.valueOf(raf.getFilePointer()));
+                }
+
+                //Verifica String
+                if (line[i] == 34) { //Simbolo: " 
+                    while (line[i] != 34) {
+                        i++;
+                        if (line.length == i) {
+                            erro.throwError(4, String.valueOf(raf.getFilePointer()));
+                            continue;
+                        }
+                    }
                 }
             }
             //Fim da linha
-            line = raf.readLine().toCharArray();
         }
     }
 }
