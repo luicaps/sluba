@@ -22,8 +22,10 @@ public class PalavraReservada {
         tabela.addSimbolo("char");
         tabela.addSimbolo("read");
         tabela.addSimbolo("write");
+        tabela.addSimbolo("writeln");
         tabela.addSimbolo("procedure");
         tabela.addSimbolo("if");
+        tabela.addSimbolo("while");
         tabela.addSimbolo("for");
         tabela.addSimbolo("inc");
         tabela.addSimbolo("dec");

@@ -31,8 +31,6 @@ public class Sluba {
 
         //Tabela de Simbolos
         TabelaDeSimbolos tb = new TabelaDeSimbolos();
-        //Modulos
-        Lexico lexico = new Lexico(tb, verbose, erro);
 
         //Arquivo
         File file;
@@ -60,12 +58,19 @@ public class Sluba {
             System.exit(0);
         }
 
-
         //Verbose
         if (args[1].equals("-v")) {
             verbose = true;
             System.out.println("Opcao Verbose ativada.");
             f++;
+        }
+
+        //Analisa os parametros de entrada
+        for (int i = 2; i < args.length; i++) {
+            if (args[i].equals("-o")) {
+                output = true;
+                oPath = args[i + 1];
+            }
         }
 
         //Abre o arquivo
@@ -80,12 +85,10 @@ public class Sluba {
             erro.throwError(2, null);
         }
 
-        //Analisa os parametros de entrada
-        for (int i = 2; i < args.length; i++) {
-            if (args[i].equals("-o")) {
-                output = true;
-                oPath = args[i + 1];
-            }
+
+        //Verifica se o formato esta correto
+        if (!file.getAbsolutePath().substring((file.getAbsolutePath().length() - 3), file.getAbsolutePath().length()).equals("slb")) {
+            erro.throwError(0, null);
         }
 
         //Verbose
@@ -95,13 +98,20 @@ public class Sluba {
             System.out.println();
         }
 
+        //Instancia os Modulos
+        Lexico lexico = new Lexico(tb, verbose, erro);
+
         //Inicio de Modulo Lexico
-        System.out.println("Iniciando analise lexica:\n\n");
+        if (verbose) {
+            System.out.println("Iniciando analise lexica:\n\n");
+        }
         try {
             lexico.readFile(new RandomAccessFile(file, "r"));
         } catch (IOException ex) {
             Logger.getLogger(Sluba.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        //Imprime erros
+        erro.printError();
     }
 }

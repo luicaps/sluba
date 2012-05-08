@@ -1,0 +1,2 @@
+#!/bin/bash
+java -jar /home/luiz-mint/NetBeansProjects/sluba/dist/sluba.jar $PWD $@
