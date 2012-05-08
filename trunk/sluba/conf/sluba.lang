@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+
+<language id="sluba" _name="Sluba" version="2.0" _section="Sources">
+    <metadata>
+      <property name="mimetypes">text/x-sluba</property>
+      <property name="globs">*.slb</property>
+      <property name="line-comment-start">//</property>
+    </metadata>
+
+    <styles>
+        <style id="keyword" _name="Keyword" map-to="def:keyword"/>
+	<style id="identifier" _name="Identifier" map-to="def:identifier"/>
+        <style id="type" _name="Data Type" map-to="def:type"/>
+	<style id="statement" _name="Statement" map-to="def:statement"/>
+        <style id="preprocessor" _name="Preprocessor" map-to="def:preprocessor"/>
+	<style id="note" _name="Note" map-to="def:note"/>
+	<style id="comment" _name="Comment" map-to="def:comment"/>
+    </styles>
+
+    <definitions>
+        <!-- Sluba-specific stuff -->
+        <context id="sluba-proper">
+            <include>
+
+		<context id="procedure" style-ref="identifier">
+                    	<keyword>inc</keyword>
+			<keyword>dec</keyword>
+			<keyword>break</keyword>
+		</context>
+
+                <context id="types" style-ref="type">
+                    <keyword>int</keyword>
+                    <keyword>float</keyword>
+                    <keyword>char</keyword>
+                </context>
+		
+		<context id="states" style-ref="statement">
+			<keyword>if</keyword>
+			<keyword>for</keyword>
+			<keyword>while</keyword>
+			<keyword>write</keyword>
+			<keyword>writeln</keyword>
+			<keyword>read</keyword>
+		</context>
+
+                <context id="StartFinish" style-ref="preprocessor">
+                    <keyword>Start</keyword>
+                    <keyword>Finish</keyword>
+                    <keyword>procedure</keyword>
+                </context>
+
+		<!--<context id="Operators" style-ref="comment">
+			<keyword>></keyword>
+			<keyword><</keyword>
+			<keyword>!</keyword>
+			<keyword>-</keyword>
+			<keyword>+</keyword>
+			<keyword>*</keyword>
+			<keyword>/</keyword>
+			<keyword>%</keyword>
+			<keyword>||</keyword>
+			<keyword>&&</keyword>
+		</context>-->
+            </include>
+        </context>
+
+        <!-- actual language definition: Sluba -->
+        <context id="sluba">
+            <include>
+                <context ref="sluba-proper"/>
+	        <context ref="def:c-like-comment"/>
+                <context ref="c:decimal"/>
+                <context ref="c:float"/>
+                <context ref="c:char"/>
+                <context ref="c:string"/>
+            </include>
+        </context>
+    </definitions>
+</language>
