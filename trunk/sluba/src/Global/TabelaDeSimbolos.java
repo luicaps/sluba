@@ -33,8 +33,8 @@ public class TabelaDeSimbolos {
         }
     }
 
-    public void abrirBloco(long id) {
-        Bloco filho = new Bloco(id, this.raiz);
+    public void abrirBloco() {
+        Bloco filho = new Bloco(this.raiz);
         this.raiz.getListaDeFilhos().add(filho);
         this.raiz = this.raiz.getListaDeFilhos().get(this.raiz.getListaDeFilhos().size() - 1);
     }
@@ -55,5 +55,13 @@ public class TabelaDeSimbolos {
         } else {
             return true;
         }
+    }
+
+    public Bloco getRaiz() {
+        return raiz;
+    }
+
+    public void setRaiz(Bloco raiz) {
+        this.raiz = raiz;
     }
 }
