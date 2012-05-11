@@ -7,8 +7,7 @@ package Lexico;
 import Global.Erro;
 import Global.PalavraReservada;
 import Global.TabelaDeSimbolos;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 
 /**
  *
@@ -31,7 +30,7 @@ public class Lexico {
     }
 
     //Este metodo realiza a leitura completa de arquivo, completando a tabela de simbolos
-    public void readFile(RandomAccessFile raf) throws IOException {
+    public void readFile(RandomAccessFile raf, String path) throws IOException {
 
         /*
          * Variaveis auxiliares de leitura
@@ -48,11 +47,22 @@ public class Lexico {
          *
          * @panic = booleano que indica se a leitura da palavra atual esta em
          * erro, para que seja ignorada ao seu final
+         *
+         * @saida = Arquivo da saida de tokens do modulo lexico
+         *
+         * @fout = escritor para o arquivo de saida de tokens
+         *
          */
         char[] line;
         String palavra = new String();
         int j = 0;
         boolean panic = false;
+        File saida = new File(path);
+        if (!saida.exists()) {
+            saida.createNewFile();
+        }
+        FileWriter fw = new FileWriter(saida);
+        PrintWriter fout = new PrintWriter(fw);
 
         if (verbose) {
             System.out.println("\tIniciando a leitura de linhas");
@@ -88,8 +98,10 @@ public class Lexico {
                     //Verifica se foi lido um numero e ao mesmo tempo a palavra esta vazia
                     if (palavra.equals("") && (line[i] >= 48 && line[i] <= 57)) {
                         //Este ciclo while percorre a linha enquanto for lido numeros, para serem ignorados
+                        fout.write(line[i]);
                         i++;
                         while (line[i] >= 48 && line[i] <= 57 && i < (line.length - 1)) {
+                            fout.write(line[i]);
                             i++;
                         }
 
@@ -141,6 +153,7 @@ public class Lexico {
                         //Verifica se é nao uma palavra reservada, se for ignora
                         if (!palavras.getTabela().encontrarSimbolo(palavra)) {
                             //Verifica se o simbolo ja foi inserido anteriormente
+                            fout.print("id");
                             if (!simbolos.encontrarSimbolo(palavra)) {
                                 //Verifica o modo panico, que se estiver ligado, esta palavra deve ser ignorada
                                 if (!panic) {
@@ -155,19 +168,26 @@ public class Lexico {
                                     if (verbose) {
                                         System.out.println("Novo bloco identificado");
                                     }
-                                    if(line[i] == '}'){
+                                    if (line[i] == '}') {
                                         //Se o pai não for nulo existe um bloco acima na hierarquia que será a nova raiz
-                                        if(simbolos.getRaiz().getPai() != null){
+                                        if (simbolos.getRaiz().getPai() != null) {
                                             simbolos.fecharBloco();
                                         }
-                                        if(verbose){
+                                        if (verbose) {
                                             System.out.println("Bloco fechado");
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            //Esreceve a palavra reservada
+                            fout.write(palavra);
                         }
                         palavra = "";
+                    }
+                    //Escreve no arquivo de saida de tokens
+                    if (!((line[i] == ' ') || (line[i] == '/') || (line[i] == '"') || (line[i] == 9))) {
+                        fout.write(line[i]);
                     }
                     panic = false;
                 }
@@ -193,9 +213,11 @@ public class Lexico {
 
                 //Verifica String, para ser ignorada
                 if (line[i] == 34) { //Simbolo: " 
+                    fout.write(line[i]);
                     i++;
                     //Percorre ateh encontrar outra aspa
                     while (line[i] != 34) {
+                        fout.write(line[i]);
                         i++;
                         //Erro caso termine a linha sem encontrar a aspa
                         if (line.length == i) {
@@ -219,7 +241,7 @@ public class Lexico {
                     }
                 }
             }
-            
+
             //Aqui finaliza o for, e a verificacao da linha pode ter finalizada sem ter finalizado a verificacao de algum simbolo
             //Esta verificacao eh a mesma que esta dentro do for
             if (!palavra.equals("")) {
@@ -228,15 +250,22 @@ public class Lexico {
                     if (!simbolos.encontrarSimbolo(palavra)) {
                         if (!panic) {
                             simbolos.InserirSimbolo(palavra, classeId);
-                            System.out.println("Simbolo adicionado: " + palavra);
+                            if (verbose) {
+                                System.out.println("Simbolo adicionado: " + palavra);
+                            }
                         } else {
                             panic = false;
                         }
                     }
                 }
+                //Escreve no arquivo de saida de tokens
+                fout.write(palavra);
                 palavra = "";
             }
             //Fim da linha
+            fout.println();
         }
+        fout.close();
+        fw.close();
     }
 }

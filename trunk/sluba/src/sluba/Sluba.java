@@ -77,7 +77,7 @@ public class Sluba {
         if (args[f].substring(0, 1).compareTo("/") == 0) {
             file = new File(args[f]);
         } else {
-            file = new File(args[0] + "/" + args[1]);
+            file = new File(args[0] + "/" + args[f]);
         }
 
         //Verifica existencia do arquivo
@@ -100,13 +100,16 @@ public class Sluba {
 
         //Instancia os Modulos
         Lexico lexico = new Lexico(tb, verbose, erro);
-
         //Inicio de Modulo Lexico
+        
+        //Caminho statico do arquivo de Tokens
+        final String tokenpath = file.getParent() + "/out_token_"+ file.getName().substring(0, (file.getName().length() - 4)) +".slbt";
+        
         if (verbose) {
             System.out.println("Iniciando analise lexica:\n\n");
         }
         try {
-            lexico.readFile(new RandomAccessFile(file, "r"));
+            lexico.readFile(new RandomAccessFile(file, "r"), tokenpath);
         } catch (IOException ex) {
             Logger.getLogger(Sluba.class.getName()).log(Level.SEVERE, null, ex);
         }
