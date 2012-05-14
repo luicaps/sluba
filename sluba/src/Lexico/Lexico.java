@@ -98,12 +98,14 @@ public class Lexico {
                     //Verifica se foi lido um numero e ao mesmo tempo a palavra esta vazia
                     if (palavra.equals("") && (line[i] >= 48 && line[i] <= 57)) {
                         //Este ciclo while percorre a linha enquanto for lido numeros, para serem ignorados
-                        fout.write(line[i]);
+                        fout.write("$CT," + line[i]);
                         i++;
                         while (line[i] >= 48 && line[i] <= 57 && i < (line.length - 1)) {
                             fout.write(line[i]);
                             i++;
                         }
+                        fout.write("#");
+                        fout.println();
 
                         //Como foi lido inicialmente um numero, nao pode ser lido uma letra. Este if gera o erro caso haja uma letra, entrando no modo panico.
                         if (((line[i] > 64 && line[i] < 91) || (line[i] > 96 && line[i] < 123))
@@ -153,7 +155,8 @@ public class Lexico {
                         //Verifica se é nao uma palavra reservada, se for ignora
                         if (!palavras.getTabela().encontrarSimbolo(palavra)) {
                             //Verifica se o simbolo ja foi inserido anteriormente
-                            fout.print("id");
+                            fout.write("$ID," + palavra + "#");
+                            fout.println();
                             if (!simbolos.encontrarSimbolo(palavra)) {
                                 //Verifica o modo panico, que se estiver ligado, esta palavra deve ser ignorada
                                 if (!panic) {
@@ -180,14 +183,122 @@ public class Lexico {
                                 }
                             }
                         } else {
-                            //Esreceve a palavra reservada
-                            fout.write(palavra);
+                            //Esreceve a palavra reservada.
+                            fout.write("$PR," + palavra + "#");
+                            fout.println();
                         }
                         palavra = "";
                     }
-                    //Escreve no arquivo de saida de tokens
-                    if (!((line[i] == ' ') || (line[i] == '/') || (line[i] == '"') || (line[i] == 9))) {
-                        fout.write(line[i]);
+                    //Verifica se eh um operador matematico ou logico
+                    if ((line[i] == '=')
+                            || (line[i] == '+')
+                            || (line[i] == '-')
+                            || (line[i] == '*')
+                            || (line[i] == '/')
+                            || (line[i] == '!')
+                            || (line[i] == '>')
+                            || (line[i] == '<')
+                            || (line[i] == '|')
+                            || (line[i] == '&')
+                            || (line[i] == '%')) {
+                        //verifica se eh operador matematico
+                        if ((line[i] == '+')
+                                || (line[i] == '-')
+                                || (line[i] == '*')
+                                || (line[i] == '/')
+                                || (line[i] == '%')) {
+                            fout.write("$OP," + line[i] + "#");
+                            fout.println();
+                        }
+                        //verifica igualdade
+                        if (line[i] == '=') {
+                            //ver se vai ser de comparacao
+                            if ((line[i + 1] == '=')
+                                    || (line[i + 1] == '<')
+                                    || (line[i + 1] == '>')) {
+                                fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                fout.println();
+                                i++;
+                            } else {
+                                fout.write("$OP," + line[i] + "#");
+                                fout.println();
+                            }
+                        } else {
+                            //Verifica se eh um operador logico
+                            if ((line[i] == '!')
+                                    || (line[i] == '>')
+                                    || (line[i] == '<')
+                                    || (line[i] == '|')
+                                    || (line[i] == '&')) {
+                                //NOT
+                                if (line[i] == '!') {
+                                    if (line[i + 1] == '=') {
+                                        fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                        fout.println();
+                                        i++;
+                                    } else {
+                                        fout.write("$LO," + line[i] + "#");
+                                        fout.println();
+                                    }
+                                } else {
+
+                                    //MAIOR
+                                    if (line[i] == '>') {
+                                        if (line[i + 1] == '=') {
+                                            fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                            fout.println();
+                                            i++;
+                                        } else {
+                                            fout.write("$LO," + line[i] + "#");
+                                            fout.println();
+                                        }
+                                    } else {
+
+                                        //MENOR
+                                        if (line[i] == '<') {
+                                            if (line[i + 1] == '=') {
+                                                fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                                fout.println();
+                                                i++;
+                                            } else {
+                                                fout.write("$LO," + line[i] + "#");
+                                                fout.println();
+                                            }
+                                        } else {
+
+                                            //OR
+                                            if (line[i] == '|') {
+                                                if (line[i + 1] == '|') {
+                                                    fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                                    fout.println();
+                                                    i++;
+                                                } else {
+                                                    //Erro???
+                                                }
+                                            } else {
+
+                                                //AND
+                                                if (line[i] == '&') {
+                                                    if (line[i + 1] == '&') {
+                                                        fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                                        fout.println();
+                                                        i++;
+                                                    } else {
+                                                        //Erro???
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        //Verifica se eh um token comum
+                        if (!((line[i] == ' ') || (line[i] == '/') || (line[i] == '"') || (line[i] == 9))) {
+                            fout.write("$TK," + line[i] + "#");
+                            fout.println();
+                        }
                     }
                     panic = false;
                 }
@@ -213,7 +324,7 @@ public class Lexico {
 
                 //Verifica String, para ser ignorada
                 if (line[i] == 34) { //Simbolo: " 
-                    fout.write(line[i]);
+                    fout.write("$ST," + line[i]);
                     i++;
                     //Percorre ateh encontrar outra aspa
                     while (line[i] != 34) {
@@ -225,6 +336,8 @@ public class Lexico {
                             break;
                         }
                     }
+                    fout.write(line[i] + "#");
+                    fout.println();
                 }
 
                 //Verifica comentario
@@ -247,6 +360,8 @@ public class Lexico {
             if (!palavra.equals("")) {
                 //Verifica se é uma palavra reservada 
                 if (!palavras.getTabela().encontrarSimbolo(palavra)) {
+                    fout.write("$ID," + palavra);
+                    fout.println();
                     if (!simbolos.encontrarSimbolo(palavra)) {
                         if (!panic) {
                             simbolos.InserirSimbolo(palavra, classeId);
@@ -257,13 +372,14 @@ public class Lexico {
                             panic = false;
                         }
                     }
+                } else {
+                    fout.write("$PR," + palavra + "#");
+                    fout.println();
                 }
                 //Escreve no arquivo de saida de tokens
-                fout.write(palavra);
                 palavra = "";
             }
             //Fim da linha
-            fout.println();
         }
         fout.close();
         fw.close();
