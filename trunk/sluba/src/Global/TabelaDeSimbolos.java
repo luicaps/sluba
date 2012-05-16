@@ -36,6 +36,7 @@ public class TabelaDeSimbolos {
     public void abrirBloco() {
         Bloco filho = new Bloco(this.raiz);
         this.raiz.getListaDeFilhos().add(filho);
+        filho.setIdLista(this.raiz.getListaDeFilhos().size()-1);
         this.raiz = this.raiz.getListaDeFilhos().get(this.raiz.getListaDeFilhos().size() - 1);
     }
 

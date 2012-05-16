@@ -168,16 +168,11 @@ public class Lexico {
                                     if (line[i] == '{') {
                                         simbolos.abrirBloco();
                                     }
-                                    if (verbose) {
-                                        System.out.println("Novo bloco identificado");
-                                    }
                                     if (line[i] == '}') {
                                         //Se o pai não for nulo existe um bloco acima na hierarquia que será a nova raiz
+                                        //quando o pai for null apenas gera o teken de fechamento de bloco sem fechar um bloco
                                         if (simbolos.getRaiz().getPai() != null) {
                                             simbolos.fecharBloco();
-                                        }
-                                        if (verbose) {
-                                            System.out.println("Bloco fechado");
                                         }
                                     }
                                 }
@@ -379,7 +374,6 @@ public class Lexico {
                 //Escreve no arquivo de saida de tokens
                 palavra = "";
             }
-            //Fim da linha
         }
         fout.close();
         fw.close();
