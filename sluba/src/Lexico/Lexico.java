@@ -98,13 +98,13 @@ public class Lexico {
                     //Verifica se foi lido um numero e ao mesmo tempo a palavra esta vazia
                     if (palavra.equals("") && (line[i] >= 48 && line[i] <= 57)) {
                         //Este ciclo while percorre a linha enquanto for lido numeros, para serem ignorados
-                        fout.write("$CT," + line[i]);
+                        fout.write("CT$" + line[i]);
                         i++;
                         while (line[i] >= 48 && line[i] <= 57 && i < (line.length - 1)) {
                             fout.write(line[i]);
                             i++;
                         }
-                        fout.write("#");
+                        fout.write("$" + j);
                         fout.println();
 
                         //Como foi lido inicialmente um numero, nao pode ser lido uma letra. Este if gera o erro caso haja uma letra, entrando no modo panico.
@@ -155,7 +155,7 @@ public class Lexico {
                         //Verifica se é nao uma palavra reservada, se for ignora
                         if (!palavras.getTabela().encontrarSimbolo(palavra)) {
                             //Verifica se o simbolo ja foi inserido anteriormente
-                            fout.write("$ID," + palavra + "#");
+                            fout.write("ID$" + palavra + "$" + j);
                             fout.println();
                             if (!simbolos.encontrarSimbolo(palavra)) {
                                 //Verifica o modo panico, que se estiver ligado, esta palavra deve ser ignorada
@@ -179,7 +179,7 @@ public class Lexico {
                             }
                         } else {
                             //Esreceve a palavra reservada.
-                            fout.write("$PR," + palavra + "#");
+                            fout.write("PR$" + palavra + "$" + j);
                             fout.println();
                         }
                         palavra = "";
@@ -202,7 +202,7 @@ public class Lexico {
                                 || (line[i] == '*')
                                 || (line[i] == '/')
                                 || (line[i] == '%')) {
-                            fout.write("$OP," + line[i] + "#");
+                            fout.write("OP$" + line[i] + "$" + j);
                             fout.println();
                         }
                         //verifica igualdade
@@ -211,11 +211,11 @@ public class Lexico {
                             if ((line[i + 1] == '=')
                                     || (line[i + 1] == '<')
                                     || (line[i + 1] == '>')) {
-                                fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                fout.write("LO$" + line[i] + line[i + 1] + "$" + j);
                                 fout.println();
                                 i++;
                             } else {
-                                fout.write("$OP," + line[i] + "#");
+                                fout.write("OP$" + line[i] + "$" + j);
                                 fout.println();
                             }
                         } else {
@@ -228,11 +228,11 @@ public class Lexico {
                                 //NOT
                                 if (line[i] == '!') {
                                     if (line[i + 1] == '=') {
-                                        fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                        fout.write("LO$" + line[i] + line[i + 1] + "$" + j);
                                         fout.println();
                                         i++;
                                     } else {
-                                        fout.write("$LO," + line[i] + "#");
+                                        fout.write("LO$" + line[i] + "$" + j);
                                         fout.println();
                                     }
                                 } else {
@@ -240,11 +240,11 @@ public class Lexico {
                                     //MAIOR
                                     if (line[i] == '>') {
                                         if (line[i + 1] == '=') {
-                                            fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                            fout.write("LO$" + line[i] + line[i + 1] + "$" + j);
                                             fout.println();
                                             i++;
                                         } else {
-                                            fout.write("$LO," + line[i] + "#");
+                                            fout.write("LO$" + line[i] + "$" + j);
                                             fout.println();
                                         }
                                     } else {
@@ -252,11 +252,11 @@ public class Lexico {
                                         //MENOR
                                         if (line[i] == '<') {
                                             if (line[i + 1] == '=') {
-                                                fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                                fout.write("LO$" + line[i] + line[i + 1] + "$" + j);
                                                 fout.println();
                                                 i++;
                                             } else {
-                                                fout.write("$LO," + line[i] + "#");
+                                                fout.write("LO$" + line[i] + "$" + j);
                                                 fout.println();
                                             }
                                         } else {
@@ -264,22 +264,24 @@ public class Lexico {
                                             //OR
                                             if (line[i] == '|') {
                                                 if (line[i + 1] == '|') {
-                                                    fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                                    fout.write("LO$" + line[i] + line[i + 1] + "$" + j);
                                                     fout.println();
                                                     i++;
                                                 } else {
-                                                    //Erro???
+                                                    //Erro no OR
+                                                    erro.throwError(3, Integer.toString(j));
                                                 }
                                             } else {
 
                                                 //AND
                                                 if (line[i] == '&') {
                                                     if (line[i + 1] == '&') {
-                                                        fout.write("$LO," + line[i] + line[i + 1] + "#");
+                                                        fout.write("LO$" + line[i] + line[i + 1] + "$" + j);
                                                         fout.println();
                                                         i++;
                                                     } else {
-                                                        //Erro???
+                                                        //Erro AND
+                                                        erro.throwError(3, Integer.toString(j));
                                                     }
                                                 }
                                             }
@@ -291,7 +293,7 @@ public class Lexico {
                     } else {
                         //Verifica se eh um token comum
                         if (!((line[i] == ' ') || (line[i] == '/') || (line[i] == '"') || (line[i] == 9))) {
-                            fout.write("$TK," + line[i] + "#");
+                            fout.write("TK$" + line[i] + "$" + j);
                             fout.println();
                         }
                     }
@@ -319,20 +321,28 @@ public class Lexico {
 
                 //Verifica String, para ser ignorada
                 if (line[i] == 34) { //Simbolo: " 
-                    fout.write("$ST," + line[i]);
+//                    fout.write("ST$" + line[i]);
+                    String s = "ST$" + line[i];
+                    boolean serror = false;
                     i++;
                     //Percorre ateh encontrar outra aspa
                     while (line[i] != 34) {
-                        fout.write(line[i]);
+//                        fout.write(line[i]);
+                        s += line[i];
                         i++;
                         //Erro caso termine a linha sem encontrar a aspa
                         if (line.length == i) {
                             erro.throwError(4, Integer.toString(j));
+                            serror = true;
                             break;
                         }
                     }
-                    fout.write(line[i] + "#");
-                    fout.println();
+                    if (!serror) {
+                        fout.write(s + line[i] + "$" + j);
+                        fout.println();
+                    } else {
+                        continue;
+                    }
                 }
 
                 //Verifica comentario
@@ -342,10 +352,10 @@ public class Lexico {
                             break;
                         } else {
                             //gera erro caso nao encontre outra aspa
-                            erro.throwError(6, Integer.toString(j));
+                            erro.throwError(3, Integer.toString(j));
                         }
                     } else {
-                        erro.throwError(6, Integer.toString(j));
+                        erro.throwError(3, Integer.toString(j));
                     }
                 }
             }
@@ -355,7 +365,7 @@ public class Lexico {
             if (!palavra.equals("")) {
                 //Verifica se é uma palavra reservada 
                 if (!palavras.getTabela().encontrarSimbolo(palavra)) {
-                    fout.write("$ID," + palavra);
+                    fout.write("ID$" + palavra + "$" + j);
                     fout.println();
                     if (!simbolos.encontrarSimbolo(palavra)) {
                         if (!panic) {
@@ -368,7 +378,7 @@ public class Lexico {
                         }
                     }
                 } else {
-                    fout.write("$PR," + palavra + "#");
+                    fout.write("PR$" + palavra + "$" + j);
                     fout.println();
                 }
                 //Escreve no arquivo de saida de tokens

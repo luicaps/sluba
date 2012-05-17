@@ -37,7 +37,7 @@ public class Erro {
                 System.out.println("Compilacao interrompida.");
                 System.exit(1);
                 break;
-                
+
             //Erro 00: Arquivo de entrada nao possui o formato correto.
             case 0:
                 erros.add("sluba: Erro Fatal: Formato de arquivo nao reconhecido");
@@ -57,10 +57,6 @@ public class Erro {
             case 5:
                 erros.add("Erro linha " + component + ": Nome nao pode iniciar com numero.");
                 break;
-            case 6:
-                erros.add("Erro linha " + component + ": Uso incorreto de comentario '//'.");
-                break;
-
         }
 
         /*
@@ -70,13 +66,13 @@ public class Erro {
     }
 
     public void printError() {
-            for (String string : erros) {
-                System.out.println(string);
-            }
+        for (String string : erros) {
+            System.out.println(string);
+        }
     }
-    
+
     public boolean isErro() {
-        if(erros.size() > 0){
+        if (erros.size() > 0) {
             return true;
         } else {
             return false;
