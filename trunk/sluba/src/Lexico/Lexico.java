@@ -149,6 +149,18 @@ public class Lexico {
                         || (line[i] == ',')
                         || (line[i] == '.')) {
 
+                    //depois da adição de um simbolo for encontrado um chave add bloco
+                    if (line[i] == '{') {
+                        simbolos.abrirBloco();
+                    }
+                    if (line[i] == '}') {
+                        //Se o pai não for nulo existe um bloco acima na hierarquia que será a nova raiz
+                        //quando o pai for null apenas gera o teken de fechamento de bloco sem fechar um bloco
+                        if (simbolos.getRaiz().getPai() != null) {
+                            simbolos.fecharBloco();
+                        }
+                    }
+
                     //Se a palavra estiver vazia, nao ha o que armazenar, por isto esta verificacao.
                     if (!palavra.equals("")) {
 
@@ -163,17 +175,6 @@ public class Lexico {
                                     simbolos.InserirSimbolo(palavra, classeId);
                                     if (verbose) {
                                         System.out.println("Simbolo adicionado: " + palavra);
-                                    }
-                                    //depois da adição de um simbolo for encontrado um chave add bloco
-                                    if (line[i] == '{') {
-                                        simbolos.abrirBloco();
-                                    }
-                                    if (line[i] == '}') {
-                                        //Se o pai não for nulo existe um bloco acima na hierarquia que será a nova raiz
-                                        //quando o pai for null apenas gera o teken de fechamento de bloco sem fechar um bloco
-                                        if (simbolos.getRaiz().getPai() != null) {
-                                            simbolos.fecharBloco();
-                                        }
                                     }
                                 }
                             }
